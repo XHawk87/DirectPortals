@@ -40,7 +40,7 @@ public class PortalListener implements Listener {
     public void onPlayerPortal(PlayerPortalEvent event) {
         if (event.useTravelAgent()) {
             event.setPortalTravelAgent(useDirectTravel(event.getPortalTravelAgent(), event.getFrom(), event.getTo()));
-            }
+        }
     }
 
     private TravelAgent useDirectTravel(TravelAgent defaultTravelAgent, Location from, Location to) {
@@ -50,7 +50,8 @@ public class PortalListener implements Listener {
             int maxX = minX + 1;
             int minZ = (int) Math.round(from.getZ() - portal.getZ() - 1);
             int maxZ = minZ + 1;
-            find: for (int dx = minX; dx <= maxX; dx++) {
+            find:
+            for (int dx = minX; dx <= maxX; dx++) {
                 for (int dz = minZ; dz <= maxZ; dz++) {
                     Block near = portal.getRelative(dx, 0, dz);
                     if (near.getType() == Material.PORTAL) {

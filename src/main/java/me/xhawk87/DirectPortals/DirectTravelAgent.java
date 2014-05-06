@@ -212,7 +212,7 @@ public class DirectTravelAgent implements TravelAgent {
             maxZ = 0;
         }
         double x = portal.getX() + ((maxX + 1.0) + minX) / 2.0;
-        double y = portal.getY() + minY + 1.0;
+        double y = portal.getY() + minY;
         double z = portal.getZ() + ((maxZ + 1.0) + minZ) / 2.0;
         return new Location(portal.getWorld(), x, y, z);
     }
