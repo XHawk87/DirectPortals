@@ -133,11 +133,11 @@ public class DirectTravelAgent implements TravelAgent {
         int xFacing = 0;
         int zFacing = 0;
         if ((yaw > -45 && yaw <= 45) || (yaw > 135 && yaw <= 225)) {
-            // Facing along the Z-axis
-            zFacing = 1;
-        } else {
             // Facing along the X-axis
             xFacing = 1;
+        } else {
+            // Facing along the Z-axis
+            zFacing = 1;
         }
         for (int length = 0; length < PORTAL_TEMPLATE.length; length++) {
             for (int depth = 0; depth < PORTAL_TEMPLATE[0].length; depth++) {
@@ -147,7 +147,7 @@ public class DirectTravelAgent implements TravelAgent {
                         material = Material.AIR;
                     }
                     int xOffset = (xFacing * (length - 1)) + (zFacing * (depth - 1));
-                    int yOffset = height - 2;
+                    int yOffset = height - 1;
                     int zOffset = (zFacing * (length - 1)) + (xFacing * (depth - 1));
                     location.getBlock().getRelative(xOffset, yOffset, zOffset).setTypeId(material.getId(), false);
                 }
