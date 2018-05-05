@@ -16,6 +16,7 @@
  */
 package me.xhawk87.DirectPortals.listeners;
 
+import me.xhawk87.DirectPortals.DirectPortalInfo;
 import me.xhawk87.DirectPortals.DirectTravelAgent;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -35,7 +36,7 @@ import org.bukkit.plugin.Plugin;
  */
 public class PortalListener implements Listener {
 
-    private TravelAgent travelAgent = new DirectTravelAgent();
+    private static final TravelAgent TRAVEL_AGENT = new DirectTravelAgent();
 
     public void registerEvents(Plugin plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
@@ -76,23 +77,25 @@ public class PortalListener implements Listener {
                 return defaultTravelAgent; // Not travelling using a nether portal
             }
         }
-        Location centre = DirectTravelAgent.findPortalCentre(portal);
+        DirectPortalInfo portalInfo = DirectTravelAgent.getPortalInfo(portal);
+        Location centre = portalInfo.getCentre();
         centre.setPitch(from.getPitch());
         centre.setYaw(from.getYaw());
         if (centre.getWorld().getEnvironment() == World.Environment.NETHER
                 && to.getWorld().getEnvironment() == World.Environment.NORMAL) {
             to.setX(centre.getX() * 8.0);
             to.setZ(centre.getZ() * 8.0);
-            travelAgent.setSearchRadius(8);
+            TRAVEL_AGENT.setSearchRadius(8);
         } else if (centre.getWorld().getEnvironment() == World.Environment.NORMAL
                 && to.getWorld().getEnvironment() == World.Environment.NETHER) {
             to.setX(centre.getX() / 8.0);
             to.setZ(centre.getZ() / 8.0);
-            travelAgent.setSearchRadius(0);
+            TRAVEL_AGENT.setSearchRadius(0);
         } else {
             return defaultTravelAgent;
         }
         to.setY(centre.getY());
-        return travelAgent;
+        ((DirectTravelAgent) TRAVEL_AGENT).setAxis(portalInfo.getAxis());
+        return TRAVEL_AGENT;
     }
 }
