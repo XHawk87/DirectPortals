@@ -4,7 +4,7 @@
 
     <groupId>me.xhawk87</groupId>
     <artifactId>DirectPortals</artifactId>
-    <version>0.4</version>
+    <version>0.4.1</version>
     <packaging>jar</packaging>
 
     <name>DirectPortals</name>
@@ -27,13 +27,7 @@
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
             <!-- Bukkit API Version, change if necessary -->
-            <version>1.8.8-R0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.4</version>
-            <scope>test</scope>
+            <version>1.13-R0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
     

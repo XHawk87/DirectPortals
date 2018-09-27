@@ -20,6 +20,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.TravelAgent;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 
 /**
  *
@@ -51,12 +52,12 @@ public class DirectTravelAgent implements TravelAgent {
         PORTAL_TEMPLATE[3][1][4] = Material.OBSIDIAN;
 
         // Portal
-        PORTAL_TEMPLATE[1][1][1] = Material.PORTAL;
-        PORTAL_TEMPLATE[1][1][2] = Material.PORTAL;
-        PORTAL_TEMPLATE[1][1][3] = Material.PORTAL;
-        PORTAL_TEMPLATE[2][1][1] = Material.PORTAL;
-        PORTAL_TEMPLATE[2][1][2] = Material.PORTAL;
-        PORTAL_TEMPLATE[2][1][3] = Material.PORTAL;
+        PORTAL_TEMPLATE[1][1][1] = Material.NETHER_PORTAL;
+        PORTAL_TEMPLATE[1][1][2] = Material.NETHER_PORTAL;
+        PORTAL_TEMPLATE[1][1][3] = Material.NETHER_PORTAL;
+        PORTAL_TEMPLATE[2][1][1] = Material.NETHER_PORTAL;
+        PORTAL_TEMPLATE[2][1][2] = Material.NETHER_PORTAL;
+        PORTAL_TEMPLATE[2][1][3] = Material.NETHER_PORTAL;
 
         // Ledges
         PORTAL_TEMPLATE[0][0][0] = Material.OBSIDIAN;
@@ -132,7 +133,7 @@ public class DirectTravelAgent implements TravelAgent {
         for (int dx = -searchRadius; dx <= searchRadius; dx++) {
             for (int dz = -searchRadius; dz <= searchRadius; dz++) {
                 Block portal = block.getRelative(dx, 0, dz);
-                if (portal.getType() == Material.PORTAL) {
+                if (portal.getType() == Material.NETHER_PORTAL) {
                     // Find portal centre
                     Location centre = getPortalInfo(portal).getCentre();
                     centre.setYaw(location.getYaw());
@@ -160,8 +161,12 @@ public class DirectTravelAgent implements TravelAgent {
                     int zOffset = (zFacing * (length - 1)) + (xFacing * (depth - 1));
                     Block block = location.getBlock().getRelative(xOffset, yOffset, zOffset);
                     block.setType(material, false);
-                    if (material == Material.PORTAL) {
-                        block.setData(axis == DirectPortalInfo.Axis.z ? (byte) 2 : (byte) 1, false);
+                    if (material == Material.NETHER_PORTAL) {
+                        if (axis == DirectPortalInfo.Axis.x) {
+                            block.setBlockData(Material.NETHER_PORTAL.createBlockData("[axis=x]"), false);
+                        } else {
+                            block.setBlockData(Material.NETHER_PORTAL.createBlockData("[axis=z]"), false);
+                        }
                     }
                 }
             }
@@ -170,7 +175,7 @@ public class DirectTravelAgent implements TravelAgent {
     }
 
     public static DirectPortalInfo getPortalInfo(Block portal) {
-        if (portal.getType() != Material.PORTAL) {
+        if (portal.getType() != Material.NETHER_PORTAL) {
             throw new IllegalArgumentException("There is no portal at " + portal.toString());
         }
         double minX = 0;
@@ -179,11 +184,11 @@ public class DirectTravelAgent implements TravelAgent {
         //double maxY = 0;
         double minZ = 0;
         double maxZ = 0;
-        while (portal.getRelative((int) minX - 1, 0, 0).getType() == Material.PORTAL) {
+        while (portal.getRelative((int) minX - 1, 0, 0).getType() == Material.NETHER_PORTAL) {
             minX--;
         }
         if (portal.getRelative((int) minX - 1, 0, 0).getType() == Material.OBSIDIAN) {
-            while (portal.getRelative((int) maxX + 1, 0, 0).getType() == Material.PORTAL) {
+            while (portal.getRelative((int) maxX + 1, 0, 0).getType() == Material.NETHER_PORTAL) {
                 maxX++;
             }
             if (portal.getRelative((int) minX - 1, 0, 0).getType() != Material.OBSIDIAN) {
@@ -194,17 +199,17 @@ public class DirectTravelAgent implements TravelAgent {
             minX = 0;
             maxX = 0;
         }
-        while (portal.getRelative(0, (int) minY - 1, 0).getType() == Material.PORTAL) {
+        while (portal.getRelative(0, (int) minY - 1, 0).getType() == Material.NETHER_PORTAL) {
             minY--;
         }
         if (portal.getRelative(0, (int) minY - 1, 0).getType() != Material.OBSIDIAN) {
             minY = 0;
         }
-        while (portal.getRelative(0, 0, (int) minZ - 1).getType() == Material.PORTAL) {
+        while (portal.getRelative(0, 0, (int) minZ - 1).getType() == Material.NETHER_PORTAL) {
             minZ--;
         }
         if (portal.getRelative(0, 0, (int) minZ - 1).getType() == Material.OBSIDIAN) {
-            while (portal.getRelative(0, 0, (int) maxZ + 1).getType() == Material.PORTAL) {
+            while (portal.getRelative(0, 0, (int) maxZ + 1).getType() == Material.NETHER_PORTAL) {
                 maxZ++;
             }
             if (portal.getRelative(0, 0, (int) minZ - 1).getType() != Material.OBSIDIAN) {

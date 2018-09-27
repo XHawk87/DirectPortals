@@ -58,7 +58,7 @@ public class PortalListener implements Listener {
 
     private TravelAgent useDirectTravel(TravelAgent defaultTravelAgent, Location from, Location to) {
         Block portal = from.getBlock();
-        if (portal.getType() != Material.PORTAL) {
+        if (portal.getType() != Material.NETHER_PORTAL) {
             int minX = (int) Math.round(from.getX() - portal.getX() - 1);
             int maxX = minX + 1;
             int minZ = (int) Math.round(from.getZ() - portal.getZ() - 1);
@@ -67,13 +67,13 @@ public class PortalListener implements Listener {
             for (int dx = minX; dx <= maxX; dx++) {
                 for (int dz = minZ; dz <= maxZ; dz++) {
                     Block near = portal.getRelative(dx, 0, dz);
-                    if (near.getType() == Material.PORTAL) {
+                    if (near.getType() == Material.NETHER_PORTAL) {
                         portal = near;
                         break find;
                     }
                 }
             }
-            if (portal.getType() != Material.PORTAL) {
+            if (portal.getType() != Material.NETHER_PORTAL) {
                 return defaultTravelAgent; // Not travelling using a nether portal
             }
         }
